@@ -1,0 +1,49 @@
+﻿<Window x:Class="IdslTracker.AddAccrualsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:IdslTracker"
+        mc:Ignorable="d"
+        Title="AddAccrualsWindow" Height="450" Width="800"  Closing="Window_Closing" WindowStartupLocation="CenterOwner">
+    <Grid Margin="40">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height=".1*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="1" LastChildFill="True">
+            <Label Content="DocNr/ JobNr Filter: " VerticalContentAlignment="Center"></Label>
+            <TextBox x:Name="filterTextBox" TextChanged="TextBox_TextChanged"></TextBox>
+        </DockPanel>
+        <Label Margin="0,20" Content="DocNr /JobNr:" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="1"></Label>
+        <ComboBox Margin="0,20" x:Name="docNrJobNrComboBox" Grid.Column="1" SelectionChanged="DocNrJobNrComboBox_SelectionChanged" Grid.Row="1" DisplayMemberPath="JobNrPipeDocNr">
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Width="250" VirtualizingStackPanel.VirtualizationMode="Recycling" CanHorizontallyScroll="True"/>
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+        </ComboBox>
+
+
+        <Label Margin="0,20" Content="Value:" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+        <TextBox IsEnabled="False" Margin="0,20" x:Name="valueTextBox" Grid.Row="2" Grid.Column="1" Text="{Binding Path=Txt, StringFormat=C}"></TextBox>
+        <Label Margin="0,20" Content="Date:" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+        <DockPanel Grid.Row="3" Grid.Column="1">
+            <Button Click="SetDatepickerToday_Button_Click" DockPanel.Dock="Right" Content="Today" Padding="20,0" Margin="10,20,0,20"></Button>
+            <Button Click="SetDatepicker2099_Button_Click" DockPanel.Dock="Right" Content="2099" Padding="20,0" Margin="10,20,0,20"></Button>
+            <DatePicker Margin="0,20" x:Name="accrualDatePicker" DisplayDate="{x:Static sys:DateTime.Now}"></DatePicker>
+
+        </DockPanel>
+
+        <Button Click="AddAccrual_Button_Click" Grid.Row="5" Grid.ColumnSpan="2" Margin="150,20" Content="Add Accrual"></Button>
+    </Grid>
+</Window>

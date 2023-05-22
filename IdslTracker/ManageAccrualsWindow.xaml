@@ -1,0 +1,67 @@
+﻿<Window x:Class="IdslTracker.ManageAccrualsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IdslTracker"
+        mc:Ignorable="d"
+        Title="ManageAccrualsWindow" Height="800" Width="1200" Closing="Window_Closing" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded">
+    <Window.Resources>
+        <local:PowerUserVisibilityConverter x:Key="PowerUserVisibilityConverter" />
+    </Window.Resources>
+    <Grid Margin="50">
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".5*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="1.5*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Content="Filtered Total: " FontSize="14" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"></Label>
+            <TextBox Grid.Column="1" Padding="20,0" IsEnabled="False" x:Name="FilteredTotalTextBox"></TextBox>
+            <Label Grid.Column="2" Content="Highlighted Total: "  FontSize="14" VerticalContentAlignment="Center"  HorizontalContentAlignment="Right"></Label>
+            <TextBox Grid.Column="3" Padding="20,0" IsEnabled="False" x:Name="HighlightedTotalTextBox"></TextBox>
+            <Label Grid.Column="4" Content="Status: " VerticalAlignment="Center" Margin="20,0,0,0"  FontSize="14" VerticalContentAlignment="Center"  HorizontalContentAlignment="Right"></Label>
+            <ComboBox Grid.Column="5" x:Name="StatusComboBox" SelectionChanged="StatusComboBox_SelectionChanged" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
+
+        </Grid>
+        <DataGrid x:Name="MainDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Grid.Row="1" SelectionChanged="MainDataGrid_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding ContractName}" Header="Contract Name"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding JobNr}" Header="Job Phase"></DataGridTextColumn>
+                <DataGridTextColumn x:Name="TrackerValueColumn" ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding TrackerValue, StringFormat=C}" Header="Tracker Value"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding Value2099, StringFormat=C}" Header="2099 Value"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding InvoicedValue, StringFormat=C}" Header="Invoiced Value(Check)"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding DbVal, StringFormat=C}" Header="db Value"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding StatusPerTracker}" Header="Status Per Tracker"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding Date, StringFormat=\{0:dd/MM/yyyy\}}" Header="Date"></DataGridTextColumn>
+                <DataGridTemplateColumn  Width="1*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Margin="5,0" Click="EditAccrual_Button_Click" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}">Edit</Button>
+                        </DataTemplate>
+                        
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn  Width="1*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Margin="5,0" Click="DeleteAccrual_Button_Click" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}">Delete</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Margin="0,10,0,0" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Padding="50,0" Content="Add" Click="AddAccrual_Button_Click"></Button>
+        </StackPanel>
+    </Grid>
+</Window>

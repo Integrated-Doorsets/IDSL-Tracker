@@ -1,0 +1,433 @@
+﻿<Window x:Class="IdslTracker.DetailViewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IdslTracker"
+        mc:Ignorable="d"
+        Title="DetailViewWindow" Height="1200" Width="1600" Loaded="Window_Loaded" WindowState="Maximized">
+    <Window.Resources>
+        <local:PowerUserVisibilityConverter x:Key="PowerUserVisibilityConverter" />
+        <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </Window.Resources>
+    <Grid>
+        <TabControl>
+
+           
+
+            <TabItem Header="Edit">
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="5*"></RowDefinition>
+                        <RowDefinition Height="5*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="5*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="5*"></RowDefinition>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="6*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="6*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.2*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Route:"></Label>
+                    <!--<Label x:Name="ManufactureStartDateLabel"  Grid.Column="0" Grid.Row="11" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Manufacture Start Date:"></Label>-->
+                    <!--<DatePicker x:Name="ManufactureStartDateDatePicker" FontSize="15" Grid.Column="1" Grid.Row="11" Text="{Binding Path=ManufactureStartDate, Mode=OneWay}"></DatePicker>-->
+
+                    <!--<Label x:Name="ManufactureEndDateLabel"  Grid.Column="0" Grid.Row="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Manufacture Completed Date:"></Label>
+                    <DatePicker IsEnabled="False" x:Name="ManufactureEndDateDatePicker" FontSize="15" Grid.Column="1" Grid.Row="10" Text="{Binding Path=ManufactureEndDate, Mode=OneWay}"></DatePicker>-->
+                    
+                    <Label x:Name="ManufactureRepLabel" Grid.Column="0" Grid.Row="13" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Manufacture Rep:"></Label>
+                    <ComboBox x:Name="ManufactureRepComboBox" FontSize="15" Grid.Column="1" Grid.Row="13" Text="{Binding Path=ManufactureRep, Mode=OneWay}"></ComboBox>
+
+                    <Label x:Name="LabelDoorComment" Grid.Column="0" Grid.Row="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Production Comment Door:"></Label>
+                    <Label x:Name="LabelFrameComment" Grid.Column="0" Grid.Row="17" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Production Comment Frame:"></Label>
+                    <Label Grid.Column="0" Grid.Row="6" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Last Material:"></Label>
+                    <Label Grid.Column="0" Grid.Row="7" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Material Comment:"></Label>
+                    <Label Grid.Column="0" Grid.Row="9" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Customer Status:"></Label>
+                    
+                    <Grid Grid.Row="20" Grid.ColumnSpan="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Contact Name:"></Label>
+                        <Label Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Sales"></Label>
+                        <Label Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Scheduling"></Label>
+                        <Label Grid.Column="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Procurement"></Label>
+                        <TextBox x:Name="SalesContactTextBox"  IsEnabled="False" FontSize="15" Grid.Column="1" Grid.Row="1" Text="{Binding Path=SalesContact, Mode=OneWay}"></TextBox>
+                        <TextBox x:Name="SchedulingContactTextBox"  IsEnabled="False" FontSize="15" Grid.Column="2" Grid.Row="1" Text="{Binding Path=SchedulingContact, Mode=OneWay}"></TextBox>
+                        <TextBox x:Name="ProcurementContactTextBox"  IsEnabled="False" FontSize="15" Grid.Column="3" Grid.Row="1" Text="{Binding Path=ProcurementContact, Mode=OneWay}"></TextBox>
+
+                    </Grid>
+                    
+                    <Grid Grid.Row="22" Grid.ColumnSpan="3" Margin="0,0,20,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Quantities:"></Label>
+                        <Label Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Door"></Label>
+                        <Label Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Frame"></Label>
+                        <Label Grid.Column="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Panel"></Label>
+                        <Label Grid.Column="4" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Screen"></Label>
+                        <Label Grid.Column="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Misc"></Label>
+                        <Label Grid.Column="6" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Iron"></Label>
+                        <TextBox x:Name="DoorQtyTextBox" KeyUp="ItemChanged" HorizontalContentAlignment="Center" PreviewTextInput="NumberValidationTextBox" FontSize="15" Grid.Column="1" Grid.Row="1" Text="{Binding Path=DoorQty, Mode=OneWay}"></TextBox>
+                        <TextBox x:Name="FrameQtyTextBox" KeyUp="ItemChanged" HorizontalContentAlignment="Center" PreviewTextInput="NumberValidationTextBox" FontSize="15" Grid.Column="2" Grid.Row="1" Text="{Binding Path=FrameQty, Mode=OneWay}"></TextBox>
+                        <TextBox x:Name="PanelQtyTextBox" KeyUp="ItemChanged" HorizontalContentAlignment="Center" PreviewTextInput="NumberValidationTextBox" FontSize="15" Grid.Column="3" Grid.Row="1" Text="{Binding Path=PanelQty, Mode=OneWay}"></TextBox>
+                        <TextBox x:Name="ScreenQtyTextBox" KeyUp="ItemChanged" HorizontalContentAlignment="Center" PreviewTextInput="NumberValidationTextBox" FontSize="15" Grid.Column="4" Grid.Row="1" Text="{Binding Path=ScreenQty, Mode=OneWay}"></TextBox>
+                        <TextBox x:Name="MiscQtyTextBox" KeyUp="ItemChanged" HorizontalContentAlignment="Center" PreviewTextInput="NumberValidationTextBox" FontSize="15" Grid.Column="5" Grid.Row="1" Text="{Binding Path=MiscQty, Mode=OneWay}"></TextBox>
+                        <TextBox x:Name="IronmongeryQtyTextBox" KeyUp="ItemChanged" HorizontalContentAlignment="Center" PreviewTextInput="NumberValidationTextBox" FontSize="15" Grid.Column="6" Grid.Row="1" Text="{Binding Path=IronmongeryQty, Mode=OneWay}"></TextBox>
+
+                    </Grid>
+                    
+                    <Label x:Name="FilePrintedDateLabel"  Grid.Column="0" Grid.Row="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Date File Printed:"></Label>
+                    <Label x:Name="FilePrintedByLabel" Grid.Column="0" Grid.Row="4" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="File Printed By:"></Label>
+                    <Label x:Name="DeliveryDateLabel"  Grid.Column="2" Grid.Row="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Delivery Date:"></Label>
+                    <Label x:Name="DeliveryMonthLabel"  Grid.Column="2" Grid.Row="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Delivery Month:"></Label>
+                    <Label x:Name="DeliveryWeekNumberLabel"  Grid.Column="2" Grid.Row="4" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Week Number:"></Label>
+
+                    <StackPanel Grid.Row="2" Grid.RowSpan="3">
+                        <Button x:Name="ClearPrintedDateBtn" Visibility="{Binding Source={x:Static local:Globals.IsPowerUser}, Converter={StaticResource PowerUserVisibilityConverter}}" Padding="-1,0" HorizontalAlignment="Left"  Content="Clear/Reset" Click="ResetPrintDate_Button_Click">
+                            <Button.LayoutTransform>
+                                <RotateTransform Angle="90"></RotateTransform>
+                            </Button.LayoutTransform>
+                        </Button>
+                    </StackPanel>
+                    
+
+
+
+                    <ComboBox SelectionChanged="ItemChanged" x:Name="ManfSiteComboBox" Grid.Column="1" Text="{Binding Path=ManfSite, Mode=OneWay}"></ComboBox>
+                    <TextBox Margin="0,0,20,0" x:Name="ProductionCommentDoorTextBox" KeyUp="ItemChanged" FontSize="15" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="15" TextWrapping="Wrap" Text="{Binding Path=ProductionCommentDoor, Mode=OneWay}"></TextBox>
+                    <TextBox Margin="0,0,20,0" x:Name="ProductionCommentFrameTextBox" KeyUp="ItemChanged" FontSize="15" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="17" TextWrapping="Wrap" Text="{Binding Path=ProductionCommentFrame, Mode=OneWay}"></TextBox>
+                    <TextBox IsEnabled="False" KeyUp="ItemChanged" FontSize="15" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="6" TextWrapping="Wrap" Text="{Binding Path=MaterialComment, Mode=OneWay}"></TextBox>
+                    <TextBox x:Name="MaterialCommentTextBox" KeyUp="ItemChanged" FontSize="15" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="7" TextWrapping="Wrap" Text="{Binding Path=ManualMaterialComment, Mode=OneWay}" TextChanged="MaterialCommentTextBox_TextChanged"></TextBox>
+                    <TextBox IsEnabled="False" FontSize="15" Grid.Column="1" Grid.Row="9" TextWrapping="Wrap" Text="{Binding Path=CustomerStatus, Mode=OneWay}"></TextBox>
+                    <Label Grid.Row="11"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Door Last Stage(s):" ></Label>
+                    <TextBox IsEnabled="False" FontSize="15" Grid.Column="1" Grid.Row="11" TextWrapping="Wrap" Text="{Binding Path=LastStageDoor, Mode=OneWay}"></TextBox>
+                    <Label Grid.Row="11" Grid.Column="2"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Frame Last Stage(s):" ></Label>
+                    <TextBox IsEnabled="False" FontSize="15" Grid.Column="3" Grid.Row="11" TextWrapping="Wrap" Text="{Binding Path=LastStageFrame, Mode=OneWay}"></TextBox>
+
+                    <StackPanel Grid.Column="2" Grid.Row="13" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label Margin="0,0,20,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="Manufacture Complete:"></Label>
+                        <CheckBox Margin="0,0,20,0" x:Name="ManufactureCompleteCheckBox" 
+                                  IsChecked="{Binding ManufactureCompleted, Mode=OneWay}" 
+                                  FontSize="20" VerticalAlignment="Center">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="2" ScaleY="2"/>
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+                        <Label Margin="0,0,20,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Content="High End Finish:"></Label>
+                        <CheckBox Margin="0,0,20,0" x:Name="IsHighEndFinishCheckBox" 
+                                  IsChecked="{Binding IsHighEndFinish, Mode=OneWay}" 
+                                  FontSize="20" VerticalAlignment="Center">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="2" ScaleY="2"/>
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+
+                    </StackPanel>
+                    
+                    <DatePicker x:Name="FilePrintedDateDatePicker"  FontSize="15" Grid.Column="1" Grid.Row="2" Text="{Binding Path=FilePrintedDate, Mode=OneWay}"></DatePicker>
+                    <ComboBox x:Name="FilePrintedByComboBox" FontSize="15" Grid.Column="1" Grid.Row="4" Text="{Binding Path=FilePrintedBy, Mode=OneWay}"></ComboBox>
+                    <DatePicker x:Name="DeliveryDateDatePicker" SelectedDateChanged="DeliveryDateTextBox_SelectedDateChanged" FontSize="15" Grid.Column="3" Grid.Row="0" Text="{Binding Path=DeliveryDate, Mode=OneWay}"></DatePicker>
+                    <TextBox x:Name="DeliveryMonthTextBox"  IsEnabled="False" FontSize="15" Grid.Column="3" Grid.Row="2" Text="{Binding Path=DeliveryMonth, Mode=OneWay}"></TextBox>
+                    <TextBox x:Name="DeliveryWeekNumberTextBox"  IsEnabled="False" FontSize="15" Grid.Column="3" Grid.Row="4" Text="{Binding Path=DeliveryWeekNumber, Mode=OneWay}"></TextBox>
+
+
+
+                    <Button Click="UpdateBtn_Click" x:Name="updateBtn" Visibility="Visible" FontSize="15" Grid.Column="5" Grid.Row="22" Content="Update"></Button>
+                    <!--<Button Click="HistoricalComments_Button_Click" x:Name="ProductionHistoryButton" Content="History" Grid.Column="3" Grid.Row="6" Margin="10" FontSize="15"></Button>
+        <Button Click="HistoricalComments_Button_Click" x:Name="MaterialHistoryButton" Content="History" Grid.Column="3" Grid.Row="8" Margin="10" FontSize="15"></Button>-->
+                    <Border BorderBrush="Gray" Grid.Row="11" Grid.RowSpan="7" Grid.ColumnSpan="4" BorderThickness="2" Margin="0,-15"></Border>
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="History" >
+                <Grid Margin="20">
+                    <DataGrid x:Name="HistoryDataGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#FFEAAB6B"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
+                                <Setter Property="Height" Value="40"></Setter>
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*" Binding="{Binding ManfSite}" Header="ManfSite"></DataGridTextColumn>
+                            <DataGridTextColumn Width="3*" Binding="{Binding ProductionCommentDoor}" Header="Production Comment Door"></DataGridTextColumn>
+                            <DataGridTextColumn Width="3*" Binding="{Binding ProductionCommentFrame}" Header="Production Comment Frame"></DataGridTextColumn>
+                            <DataGridTextColumn Width="3*" Binding="{Binding ManualMaterialComment}" Header="Material Comment"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding DoorQty}" Header="Door Qty"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding FrameQty}" Header="Frame Qty"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding PanelQty}" Header="Panel Qty"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding ScreenQty}" Header="Screen Qty"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding MiscQty}" Header="Misc Qty"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding IronmongeryQty}" Header="Iron Qty"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding DeliveryDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Delivery Date"></DataGridTextColumn>
+                            <DataGridTextColumn Width="1.2*" Binding="{Binding Timestamp, StringFormat=\{0:dd/MM/yyyy HH:mm\}}" Header="Timestamp"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding Username}" Header="Username"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding FilePrintedDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="File Printed Date"></DataGridTextColumn>
+                            <DataGridTextColumn Width="3*" Binding="{Binding FilePrintedBy}" Header="File Printed By"></DataGridTextColumn>
+                            <DataGridCheckBoxColumn Width="*" Binding="{Binding ManufactureCompleted, Mode=OneWay}" Header="Manufacture Completed"></DataGridCheckBoxColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="WIP Commentary History" >
+                <Grid Margin="20">
+                    <DataGrid x:Name="WipHistoryDataGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#FFEAAB6B"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
+                                <Setter Property="Height" Value="40"></Setter>
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="3*" Binding="{Binding ProductionComment}" Header="Production Comment"></DataGridTextColumn>
+                            <DataGridTextColumn Width="3*" Binding="{Binding WIPStation}" Header="WIP Station"></DataGridTextColumn>
+                            <DataGridCheckBoxColumn Width="*" Binding="{Binding Risk, Mode=OneWay}" Header="Risk"></DataGridCheckBoxColumn>
+                            <DataGridTextColumn Width="1.2*" Binding="{Binding Timestamp, StringFormat=\{0:dd/MM/yyyy HH:mm\}}" Header="Timestamp"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding Username}" Header="Username"></DataGridTextColumn>
+
+                            <DataGridTextColumn Width="3*" Binding="{Binding UpdateRemark}" Header="Remark"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding LastUpdatedBy}" IsReadOnly="True" Header="Updated By"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding LastUpdatedDate, StringFormat=\{0:dd/MM/yyyy HH:mm\}}" IsReadOnly="True" Header="Updated Date"></DataGridTextColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Material Allocations">
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <!--<RowDefinition Height=".05*"></RowDefinition>-->
+                        <!--<RowDefinition Height=".1*"></RowDefinition>-->
+                    </Grid.RowDefinitions>
+                    <DataGrid x:Name="PegasusOrdersDataGrid" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#FFEAAB6B"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
+                                <Setter Property="Height" Value="40"></Setter>
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <Style.Triggers>
+
+                                    <DataTrigger Binding="{Binding RowERR}" Value="1">
+                                        <Setter Property="Background" Value="Red"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RowERR}" Value="2">
+                                        <Setter Property="Background" Value="Orange"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RowERR}" Value="3">
+                                        <Setter Property="Background" Value="Yellow"/>
+                                    </DataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding Warehouse}" Header="W/H"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding Reference}" Header="Reference"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding SupplierName}" Header="Supplier Name"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding DateCreated, StringFormat=\{0:dd/MM/yyyy\}}" Header="Date Created"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding DateRequired, StringFormat=\{0:dd/MM/yyyy\}}" Header="Date Required"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding DateQuoted, StringFormat=\{0:dd/MM/yyyy\}}" Header="Date Quoted"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding DateReceived, StringFormat=\{0:dd/MM/yyyy\}}" Header="Date Received"></DataGridTextColumn>
+                            <!--<DataGridTextColumn Width="*" Binding="{Binding CostCode}" Header="Cost Code"></DataGridTextColumn>-->
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding StockCode}" Header="Stock Code"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="3*" Binding="{Binding Desc}" Header="Desc"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="4*" Binding="{Binding ExtendedDesc}" Header="Extended Desc"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="*" Binding="{Binding Quantity,StringFormat={}{0:n4}}" Header="Quantity"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="*" Binding="{Binding QuantityReceived,StringFormat={}{0:n4}}" Header="Quantity Received"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding Price, StringFormat=C}" Header="Price"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="4*" Binding="{Binding ProcurementComments}" Header="Procurement Comments"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <!--<Button Click="PegasusOrdersPrint_Button_Click" Content="Print" Width="200" HorizontalAlignment="Right" FontSize="25" Grid.Row="3"></Button>-->
+                </Grid>
+            </TabItem>
+            <TabItem Header="Sales Order">
+                <Grid Margin="20">
+                    <DataGrid x:Name="SalesOrderDataGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#FFEAAB6B"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
+                                <Setter Property="Height" Value="40"></Setter>
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="2*" Binding="{Binding Stock}" Header="Stock"></DataGridTextColumn>
+                            <DataGridTextColumn Width="4*" Binding="{Binding Description}" Header="Description"></DataGridTextColumn>
+                            <DataGridTextColumn Width="4*" Binding="{Binding Memo}" Header="Ex Desc"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding Ordered}" Header="Ordered"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding Delivered}" Header="Delivered"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding Invoiced}" Header="Invoiced"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Contact Info">
+                <Grid Margin="20">
+                    <DataGrid x:Name="ContactsDataGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#FFEAAB6B"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
+                                <Setter Property="Height" Value="40"></Setter>
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="2*" Binding="{Binding Contact}" Header="Contact"></DataGridTextColumn>
+                            <DataGridTextColumn Width="4*" Binding="{Binding Name}" Header="Name"></DataGridTextColumn>
+                            <DataGridTextColumn Width="4*" Binding="{Binding Number}" Header="Number"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="At Risk" >
+                
+                <Grid Margin="20">
+
+
+                    <Grid.RowDefinitions>
+
+                        <RowDefinition Height="10*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                       
+
+                    </Grid.RowDefinitions>
+
+                   
+
+                   
+
+                    <DataGrid x:Name="AtRiskDataGrid" Grid.Row="0" AutoGenerateColumns="False" IsReadOnly="False">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#FFEAAB6B"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
+                                <Setter Property="Height" Value="40"></Setter>
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="3*" Binding="{Binding DocNr}" IsReadOnly="True" Visibility="Hidden"  Header="DocNr"></DataGridTextColumn>
+                            <DataGridTextColumn Width="3*" Binding="{Binding ProductionComment}" IsReadOnly="True" Header="Production Comment"></DataGridTextColumn>
+                            <DataGridTextColumn Width="3*" Binding="{Binding WIPStation}" IsReadOnly="True" Header="WIP Station"></DataGridTextColumn>
+                            <DataGridCheckBoxColumn Width="*" Binding="{Binding Risk, Mode=TwoWay}" Header="Risk"></DataGridCheckBoxColumn>
+                            <DataGridTextColumn Width="1.2*" Binding="{Binding Timestamp, StringFormat=\{0:dd/MM/yyyy HH:mm\}}" IsReadOnly="True" Header="Timestamp"></DataGridTextColumn>
+                            <DataGridTextColumn Width="3*" Binding="{Binding UpdateRemark}" Header="Remark"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding LastUpdatedBy}" IsReadOnly="True" Header="Updated By"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Binding="{Binding LastUpdatedDate, StringFormat=\{0:dd/MM/yyyy HH:mm\}}" IsReadOnly="True" Header="Updated Date"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" FlowDirection="RightToLeft">
+                        <Button Content="Save" Padding="20,0" Margin="20" Click="UpdateAtRisk_Button_Click"></Button>
+
+                    </StackPanel>
+
+
+                </Grid>
+
+
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>

@@ -1,0 +1,50 @@
+﻿<Window x:Class="IdslTracker.AddManualsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IdslTracker"
+        mc:Ignorable="d"
+        Title="AddManualsWindow" Height="450" Width="800"  Closing="Window_Closing" WindowStartupLocation="CenterOwner">
+    <Grid Margin="40">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Margin="0,5" Content="Job Type:" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+        <ComboBox Margin="0,5" x:Name="jobTypeComboBox" Grid.Column="1" ></ComboBox>
+
+
+        <Label Margin="0,5" Content="Contract Name:" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+        <TextBox Margin="0,5" x:Name="contractNameTextBox" Grid.Row="1" Grid.Column="1"></TextBox>
+
+
+
+        <Label Margin="0,5" Content="Contract Number:" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+        <TextBox Margin="0,5" x:Name="contractNumberTextBox" Grid.Row="2" Grid.Column="1"></TextBox>
+
+        <Label Margin="0,5" Content="Scheduler:" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+        <TextBox Margin="0,5" x:Name="SchedulerTextBox" Grid.Row="3" Grid.Column="1"></TextBox>
+
+
+
+        <Label Margin="0,5" Content="Value:" Grid.Row="4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+        <TextBox Margin="0,5" x:Name="valueTextBox" Grid.Row="4" Grid.Column="1" Text="{Binding Path=Txt, StringFormat=C}"></TextBox>
+
+        <Label Margin="0,5" Content="Month:" Grid.Row="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+        <DatePicker Grid.Row="5" Grid.Column="1" Margin="0,5" x:Name="manualsDatePicker"></DatePicker>
+            
+            
+
+        <Button Click="AddManuals_Button_Click" Grid.Row="6" Grid.ColumnSpan="2" Margin="150,5" Content="Add Manual Line"></Button>
+    </Grid>
+</Window>

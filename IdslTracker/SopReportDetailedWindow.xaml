@@ -1,0 +1,75 @@
+﻿<Window x:Class="IdslTracker.SopReportDetailedWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IdslTracker"
+        mc:Ignorable="d"
+        Title="Sop Report Window" WindowStartupLocation="CenterOwner" Height="450" Width="1200"  Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="20,5" Grid.ColumnSpan="2">
+            <Label Content="Filtered Total: "></Label>
+            <TextBox Padding="20,0" IsEnabled="False" x:Name="AllTotalTextBox"></TextBox>
+            <Label Margin="20,0,0,0" Content="Highlighted Total: "></Label>
+            <TextBox Padding="20,0" IsEnabled="False" x:Name="HighlightedTotalTextBox"></TextBox>
+            <Label x:Name="TypeLabel" Content="Type: " VerticalAlignment="Center" Margin="20,0,0,0"></Label>
+            <ComboBox x:Name="TypeComboBox" SelectionChanged="TypeComboBox_SelectionChanged" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="150"></ComboBox>
+            <Button x:Name="ClearFilterBtn" Visibility="Hidden" Click="ClearFilter_Button_Click" Content="Clear Contract Filter" Padding="20,0" Margin="40,0,0,0"></Button>
+            <Label x:Name="FitlerLabel" Foreground="Red" FontWeight="Bold"></Label>
+
+
+
+            <!--<Label Margin="20,0,0,0" Content="Month: "></Label>
+                        <ComboBox x:Name="MonthComboBox" Padding="20,0" ></ComboBox>-->
+        </StackPanel>
+        
+
+        <TabControl x:Name="MainTabControl" Grid.Row="1" SelectionChanged="MainTabControl_SelectionChanged">
+            <TabItem Header="Summary">
+                <DataGrid x:Name="SummaryDataGrid" Margin="20" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="DataGrid_SelectionChanged" MouseDoubleClick="SummaryDataGrid_MouseDoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="3*" Binding="{Binding ContractName}" Header="Contract Name"></DataGridTextColumn>
+                        <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding Sales, StringFormat=C}" Header="Sales"></DataGridTextColumn>
+                        <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding Type}" Header="Type"></DataGridTextColumn>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Detail">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="13*"/>
+                        <ColumnDefinition Width="380*"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <DataGrid x:Name="MainDataGrid" Margin="20" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="DataGrid_SelectionChanged" Grid.ColumnSpan="2">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Open FTB" Click="OpenFtb_Click" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding Source}" Header="Source"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="3*" Binding="{Binding Department}" Header="Department / MansfSite"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding Sales, StringFormat=C}" Header="Sales"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="2*" Binding="{Binding Date, StringFormat=\{0:dd/MM/yyyy\}}" Header="Date"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding Type}" Header="Type"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding Job}" Header="Job"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="3*" Binding="{Binding ContractName}" Header="Contract Name"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="3*" Binding="{Binding WipStatus}" Header="Wip Status"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="3*" Binding="{Binding Scheduler}" Header="Scheduler"></DataGridTextColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

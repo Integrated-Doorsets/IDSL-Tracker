@@ -1,0 +1,800 @@
+﻿<Window x:Class="IdslTracker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IdslTracker"
+        mc:Ignorable="d"
+        Title="Tracker V3" Height="800" Width="800" Background="#FFFBFBFB" Loaded="Window_Loaded">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="CustomControls/RippleEffectDecorator.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+
+            <local:HasDateOrFalseBoolConverter x:Key="HasDateOrFalseBoolConverter" />
+            <local:PowerUserVisibilityConverter x:Key="PowerUserVisibilityConverter" />
+            
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <Grid x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="6*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid x:Name="HeaderControlsGrid" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Button  Margin="20,10" Content="Refresh" Click="Refresh_Button_Click"></Button>
+            <DockPanel Grid.Column="1" Grid.ColumnSpan="2" LastChildFill="True">
+                <Label Content="Search: " HorizontalContentAlignment="Right" VerticalContentAlignment="Center"></Label>
+                <TextBox  Margin="20,10,0,10" x:Name="SearchBox" TextChanged="SearchBox_TextChanged"></TextBox>
+
+            </DockPanel>
+            <Grid Grid.Column="3" Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label HorizontalContentAlignment="Right" Grid.Column="0" Content="Delivery&#x0a;Month: " VerticalAlignment="Center" Margin="20,0,0,0"></Label>
+                <ComboBox Grid.Column="1" x:Name="universalDeliveryMonthComboBox" SelectionChanged="DeliveryMonthComboBox_SelectionChanged"  ItemStringFormat="{}{0:MMM-yy}"  Margin="0,10,20,10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
+                <Label x:Name="universalDeliveryWeekLabel" HorizontalContentAlignment="Right" Grid.Column="2" Content="Delivery&#x0a;Week: " VerticalAlignment="Center" Margin="20,0,0,0"></Label>
+                <ComboBox Grid.Column="3" x:Name="universalDeliveryWeekComboBox" SelectionChanged="UniversalDeliveryWeekComboBox_SelectionChanged"   Margin="0,10,20,10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
+
+
+                <Label x:Name="manfRepLabel" HorizontalContentAlignment="Right" Grid.Column="4" Content="Manf&#x0a;Rep: " VerticalAlignment="Center" Margin="20,0,0,0"></Label>
+                <ComboBox Grid.Column="5" x:Name="manfRepComboBox" Margin="0,10,20,10" SelectionChanged="ManfRepComboBox_SelectionChanged" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
+                <Label x:Name="manfCompleteLabel" HorizontalContentAlignment="Right" Grid.Column="6" Content="Manf&#x0a;Complete: " VerticalAlignment="Center" Margin="20,0,0,0"></Label>
+                <ComboBox Grid.Column="7" x:Name="manfCompleteComboBox" Margin="0,10,20,10" SelectionChanged="ManfCompleteComboBox_SelectionChanged" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
+                <Label x:Name="CommentColourManualLabel" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Comment&#x0a;Colour:" Grid.Column="8"></Label>
+                <ComboBox Margin="0,10,10,10" x:Name="SearchColourComboBox" SelectionChanged="SearchColourComboBox_SelectionChanged" Grid.Column="13" VerticalContentAlignment="Center" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Width="20" Margin="0,0,0,0" Background="{Binding cbItemColour}"/>
+                                <TextBlock Text="{Binding cbItemText}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+
+            </Grid>
+            <DockPanel x:Name="RefreshWarning" Background="Red" Margin="0,5" LastChildFill="True" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="4" >
+                <Viewbox>
+                    <TextBlock Background="Red">Data has not been refreshed for at least 30 minutes</TextBlock>
+                </Viewbox>
+            </DockPanel>
+            
+
+            
+            <!--<ComboBox Margin="0,10,20,10" x:Name="DisplayPresetComboBox" SelectionChanged="DisplayPresetComboBox_SelectionChanged" Grid.Column="4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></
+            >-->
+            <!--<Button  Margin="20,10" Content="Print Visible" Grid.Column="5" Click="Print_Visual_Button_Click"></Button>-->
+        </Grid>
+
+        
+        <TabControl x:Name="MainTabControl" Grid.Row="1" SelectionChanged="MainTabControl_SelectionChanged">
+            <TabItem Header="Production Tracker" Padding="10,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="7*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="20,0,0,0" VerticalAlignment="Center" Content="Filtered Total: "></Label>
+                        <TextBox Padding="20,0" Width="200" IsEnabled="False" x:Name="ProductionTrackerFilteredTotalTextBox" Margin="0,20"></TextBox>
+                        <Label Margin="20,0,0,0" VerticalAlignment="Center" Content="Highlighted Total: "></Label>
+                        <TextBox Padding="20,0" Width="200" IsEnabled="False" x:Name="ProductionTrackerHighlightedTotalTextBox" Margin="0,20"></TextBox>
+
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                        <Button Content="Export Stock and Wip" Padding="20,0" Margin="20" Click="ExportStockAndWip_Button_Click"></Button>
+
+                    </StackPanel>
+                    <DataGrid x:Name="MainTrackerDataGrid" SelectionChanged="MainTrackerDataGrid_SelectionChanged" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden" Grid.ColumnSpan="2" Sorting="MainTrackerDataGrid_Sorting">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Bulk Update Manufacture Info" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdateManufactureInfo_Click" />
+                                <MenuItem Header="Bulk Update Printed" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdatePrinted_MenuItem_Click" />
+                                <MenuItem Header="Bulk Update Material Comment" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdateMaterialComment_MenuItem_Click" />
+                                <MenuItem Header="Bulk Add to Accruals (2099)" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkAddToAccruals_MenuItem_Click" />
+                                <MenuItem Header="Copy">
+                                    <MenuItem Header="Contract" Click="CopyContract_MenuItem_Click" />
+                                    <MenuItem Header="Job No" Click="CopyJobNo_MenuItem_Click" />
+                                    <MenuItem Header="Customer" Click="CopyCustomer_MenuItem_Click" />
+                                    <MenuItem Header="Batch Ref" Click="CopyBatchRef_MenuItem_Click" />
+                                    <MenuItem Header="Production Comments Door" Click="CopyProductionCommentsDoor_MenuItem_Click" />
+                                    <MenuItem Header="Production Comments Frame" Click="CopyProductionCommentsDoor_MenuItem_Click" />
+                                    <MenuItem Header="Shopfloor Comments" Click="CopyShopfloorComments_MenuItem_Click" />
+                                </MenuItem>
+
+
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#FFEAAB6B"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
+                                <Setter Property="Height" Value="40"></Setter>
+                                <!--<Setter Property="TextWrapping" Value="Wrap"></Setter>-->
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+
+                                <Setter Property="Background" Value="{Binding RiskRowColorHex}"></Setter>
+                                <EventSetter Event="MouseDoubleClick" Handler="TrackerItemDoubleClick" />
+                                <!--<Setter Property="Height" Value="50"></Setter>-->
+                            </Style>
+                        </DataGrid.RowStyle>
+
+                        <DataGrid.Columns>
+                            <!--<DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding ManfSite}" Header="ManfSite"></DataGridTextColumn>-->
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding Contract}" Header="Contract"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding JobNo}" Header="Job No"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="2*" Binding="{Binding Customer}" Header="Customer"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.8*" Binding="{Binding BatchRef}" Header="Batch Ref"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding ProductType}" Header="Product Type"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding DoorQty}" Header="Door Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding FrameQty}" Header="Frame Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding PanelQty}" Header="Panel Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding ScreenQty}" Header="Screen Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding MiscQty}" Header="Other Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding Sales, StringFormat=C}" Header="Sales"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding DeliveryDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Delivery Date"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="*" Binding="{Binding FtbDeliveryDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Ftb Delivery Date"></DataGridTextColumn>
+                            <DataGridTextColumn Width="2*" Binding="{Binding ProductionCommentDoor}" Header="Production Comment Door">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Background" Value="{Binding ProductionCommentDoorColourHex}"></Setter>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="2*" Binding="{Binding WipCommentary}" Header="WIP Door Commentary"></DataGridTextColumn>
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource CenterCheckBox}" Width="*" Binding="{Binding IsHighEndFinish,  Mode=OneWay}" Header="High End Finish"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource CenterCheckBox}" Width="*" Binding="{Binding ManufactureCompleted,  Mode=OneWay}" Header="Manufacture Completed"></DataGridCheckBoxColumn>
+                            <DataGridTextColumn Width="2*" Binding="{Binding ProductionCommentFrame}" Header="Production Comment Frame">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Background" Value="{Binding ProductionCommentFrameColourHex}"></Setter>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="2*" Binding="{Binding WipFrameCommentary}" Header="WIP Frame Commentary"></DataGridTextColumn>
+                           
+
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource CenterCheckBox}" Width="*"   Binding="{Binding FilePrintedDate,  Converter={StaticResource HasDateOrFalseBoolConverter}, Mode=OneWay}" Header="Printed Door"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource CenterCheckBox}" Width="*"  Binding="{Binding PjlFileHasBeenPrinted,  Mode=OneWay}" Header="Printed Frame"></DataGridCheckBoxColumn>
+
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource CenterCheckBox}" Width="*"  Binding="{Binding HasBeenProcured,  Mode=OneWay}" Header="Procurement Complete"></DataGridCheckBoxColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*"  Binding="{Binding ManfRepAbv}" Header="Manufacture Rep"></DataGridTextColumn>
+                            
+                            
+                            
+
+
+                            <!--<DataGridTextColumn Width="2*" Binding="{Binding DeliveryRiskMaterials}" Header="Delivery Risk - Material">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding DeliveryRiskMaterials}" Value="Material On Time">
+                                                <Setter Property="Background" Value="Green"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding DeliveryRiskMaterials}" Value="Material Risk">
+                                                <Setter Property="Background" Value="Red"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding DeliveryRiskMaterials}" Value="Material Too Early">
+                                                <Setter Property="Background" Value="Yellow"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>-->
+
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </Grid>
+
+
+            </TabItem>
+            <TabItem Header="3rd Party Tracker" Padding="10,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="7*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="20,0,0,0" VerticalAlignment="Center" Content="Filtered Total: "></Label>
+                        <TextBox Padding="20,0" Width="200" IsEnabled="False" x:Name="ThirdPartyFilteredTotalTextBox" Margin="0,20"></TextBox>
+                        <Label Margin="20,0,0,0" VerticalAlignment="Center" Content="Highlighted Total: "></Label>
+                        <TextBox Padding="20,0" Width="200" IsEnabled="False" x:Name="ThirdPartyHighlightedTotalTextBox" Margin="0,20"></TextBox>
+
+
+                    </StackPanel>
+
+                    <DataGrid x:Name="ThirdPartyTrackerDataGrid" SelectionChanged="ThirdPartyTrackerDataGrid_SelectionChanged" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Bulk Update Manufacture Info" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdateManufactureInfo_Click" />
+                                <MenuItem Header="Bulk Update Printed" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdatePrinted_MenuItem_Click" />
+                                <MenuItem Header="Bulk Update Material Comment" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdateMaterialComment_MenuItem_Click" />
+                                <MenuItem Header="Bulk Add to Accruals (2099)" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkAddToAccruals_MenuItem_Click" />
+                                <MenuItem Header="Copy">
+                                    <MenuItem Header="Contract" Click="CopyContract_MenuItem_Click" />
+                                    <MenuItem Header="Job No" Click="CopyJobNo_MenuItem_Click" />
+                                    <MenuItem Header="Batch Ref" Click="CopyBatchRef_MenuItem_Click" />
+                                    <MenuItem Header="Customer" Click="CopyCustomer_MenuItem_Click" />
+                                    <MenuItem Header="3rd Party Comments" Click="CopyThirdPartyComments_MenuItem_Click" />
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#FFEAAB6B"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
+                                <Setter Property="Height" Value="40"></Setter>
+                                <!--<Setter Property="TextWrapping" Value="Wrap"></Setter>-->
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <EventSetter Event="MouseDoubleClick" Handler="TrackerItemDoubleClick" />
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding Contract}" Header="Contract"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding JobNo}" Header="Job No"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding BatchRef}" Header="Batch Ref"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding ProductType}" Header="Product Type"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding DoorQty}" Header="Door Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding FrameQty}" Header="Frame Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding PanelQty}" Header="Panel Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding ScreenQty}" Header="Screen Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding Sales, StringFormat=C}" Header="Sales"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="2*" Binding="{Binding Customer}" Header="Customer"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="*" Binding="{Binding DeliveryDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Delivery Date"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="*" Binding="{Binding FtbDeliveryDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Ftb Delivery Date"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="2*" Binding="{Binding ProductionCommentDoor}" Header="3rd Party Comments"></DataGridTextColumn>
+                           </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="Misc Tracker" Padding="10,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="7*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="20,0,0,0" VerticalAlignment="Center" Content="Filtered Total: "></Label>
+                        <TextBox Padding="20,0" Width="200" IsEnabled="False" x:Name="MiscFilteredTotalTextBox" Margin="0,20"></TextBox>
+                        <Label Margin="20,0,0,0" VerticalAlignment="Center" Content="Highlighted Total: "></Label>
+                        <TextBox Padding="20,0" Width="200" IsEnabled="False" x:Name="MiscHighlightedTotalTextBox" Margin="0,20"></TextBox>
+
+
+                    </StackPanel>
+                    <DataGrid x:Name="MiscTrackerDataGrid" SelectionChanged="MiscTrackerDataGrid_SelectionChanged" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Bulk Update Manufacture Info" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdateManufactureInfo_Click" />
+                                <MenuItem Header="Bulk Update Printed" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdatePrinted_MenuItem_Click" />
+                                <MenuItem Header="Bulk Update Material Comment" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdateMaterialComment_MenuItem_Click" />
+                                <MenuItem Header="Bulk Add to Accruals (2099)" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkAddToAccruals_MenuItem_Click" />
+
+                                <MenuItem Header="Copy">
+                                    <MenuItem Header="Contract" Click="CopyContract_MenuItem_Click" />
+                                    <MenuItem Header="Job No" Click="CopyJobNo_MenuItem_Click" />
+                                    <MenuItem Header="Batch Ref" Click="CopyBatchRef_MenuItem_Click" />
+                                    <MenuItem Header="Customer" Click="CopyCustomer_MenuItem_Click" />
+                                    <MenuItem Header="Misc Comments" Click="CopyMiscComments_MenuItem_Click" />
+                                </MenuItem>
+                                
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#FFEAAB6B"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
+                                <Setter Property="Height" Value="40"></Setter>
+                                <!--<Setter Property="TextWrapping" Value="Wrap"></Setter>-->
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+
+                                <EventSetter Event="MouseDoubleClick" Handler="TrackerItemDoubleClick" />
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding Contract}" Header="Contract"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding JobNo}" Header="Job No"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding BatchRef}" Header="Batch Ref"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding MiscQty}" Header="Misc Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding Sales, StringFormat=C}" Header="Sales"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="2*" Binding="{Binding Customer}" Header="Customer"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="*" Binding="{Binding DeliveryDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Delivery Date"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="2*" Binding="{Binding ProductionCommentDoor}" Header="Misc Comments"></DataGridTextColumn>
+                            </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+            </TabItem>
+
+
+            <TabItem Header="Ironmongery Tracker" Padding="10,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="7*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="20,0,0,0" VerticalAlignment="Center" Content="Filtered Total: "></Label>
+                        <TextBox Padding="20,0" Width="200" IsEnabled="False" x:Name="IronmongeryFilteredTotalTextBox" Margin="0,20"></TextBox>
+                        <Label Margin="20,0,0,0" VerticalAlignment="Center" Content="Highlighted Total: "></Label>
+                        <TextBox Padding="20,0" Width="200" IsEnabled="False" x:Name="IronmongeryHighlightedTotalTextBox" Margin="0,20"></TextBox>
+
+
+                    </StackPanel>
+
+                    <DataGrid x:Name="IronTrackerDataGrid" SelectionChanged="IronTrackerDataGrid_SelectionChanged" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Bulk Update Manufacture Info" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdateManufactureInfo_Click" />
+                                <MenuItem Header="Bulk Update Printed" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdatePrinted_MenuItem_Click" />
+                                <MenuItem Header="Bulk Update Material Comment" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdateMaterialComment_MenuItem_Click" />
+                                <MenuItem Header="Bulk Add to Accruals (2099)" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkAddToAccruals_MenuItem_Click" />
+                                <MenuItem Header="Copy">
+                                    <MenuItem Header="Contract" Click="CopyContract_MenuItem_Click" />
+                                    <MenuItem Header="Job No" Click="CopyJobNo_MenuItem_Click" />
+                                    <MenuItem Header="Customer" Click="CopyCustomer_MenuItem_Click" />
+                                    <MenuItem Header="Ironmongery Comments" Click="CopyIronmongeryComments_MenuItem_Click" />
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#FFEAAB6B"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
+                                <Setter Property="Height" Value="40"></Setter>
+                                <!--<Setter Property="TextWrapping" Value="Wrap"></Setter>-->
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+
+                                <EventSetter Event="MouseDoubleClick" Handler="TrackerItemDoubleClick" />
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding Contract}" Header="Contract"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding JobNo}" Header="Job No"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding Sales, StringFormat=C}" Header="Sales"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="2*" Binding="{Binding Customer}" Header="Customer"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="*" Binding="{Binding DeliveryDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Delivery Date"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="2*" Binding="{Binding ProductionCommentDoor}" Header="Ironmongery Comments"></DataGridTextColumn>
+                          </DataGrid.Columns>
+                    </DataGrid>
+
+                </Grid>
+
+
+            </TabItem>
+
+            <TabItem Header="Invoiced &amp; Stored" Padding="10,0">
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="7*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="20,0,0,0" VerticalAlignment="Center" Content="Filtered Total: "></Label>
+                        <TextBox Padding="20,0" Width="200" IsEnabled="False" x:Name="InvoicedAndStoredFilteredTotalTextBox" Margin="0,20"></TextBox>
+                        <Label Margin="20,0,0,0" VerticalAlignment="Center" Content="Highlighted Total: "></Label>
+                        <TextBox Padding="20,0" Width="200" IsEnabled="False" x:Name="InvoicedAndStoredHighlightedTotalTextBox" Margin="0,20"></TextBox>
+
+
+                    </StackPanel>
+
+
+                    <DataGrid x:Name="VestingTrackerDataGrid" SelectionChanged="VestingTrackerDataGrid_SelectionChanged" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Bulk Update Manufacture Info" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdateManufactureInfo_Click" />
+                                <MenuItem Header="Bulk Update Printed" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdatePrinted_MenuItem_Click" />
+                                <MenuItem Header="Bulk Update Material Comment" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdateMaterialComment_MenuItem_Click" />
+                                <MenuItem Header="Bulk Add to Accruals (2099)" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkAddToAccruals_MenuItem_Click" />
+                                <MenuItem Header="Copy">
+                                    <MenuItem Header="Contract" Click="CopyContract_MenuItem_Click" />
+                                    <MenuItem Header="Job No" Click="CopyJobNo_MenuItem_Click" />
+                                    <MenuItem Header="Batch Ref" Click="CopyBatchRef_MenuItem_Click" />
+                                    <MenuItem Header="Customer" Click="CopyCustomer_MenuItem_Click" />
+                                    <MenuItem Header="Doc Number" Click="CopyDocNumber_MenuItem_Click" />
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#FFEAAB6B"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
+                                <Setter Property="Height" Value="40"></Setter>
+                                <!--<Setter Property="TextWrapping" Value="Wrap"></Setter>-->
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+
+                                <EventSetter Event="MouseDoubleClick" Handler="TrackerItemDoubleClick" />
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding StorageRef}" Header="Storage Ref"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="*" Binding="{Binding InvoicedDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Invoiced Date"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="*" Binding="{Binding CountWeeksHeld}" Header="Count of weeks held"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding Contract}" Header="Contract"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding JobNo}" Header="Job No"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding BatchRef}" Header="Batch Ref"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding ProductType}" Header="Product Type"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding DoorQty}" Header="Door Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding FrameQty}" Header="Frame Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding PanelQty}" Header="Panel Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding ScreenQty}" Header="Screen Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding MiscQty}" Header="Misc Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding Sales, StringFormat=C}" Header="Storage Value"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="2*" Binding="{Binding Customer}" Header="Customer"></DataGridTextColumn>
+                            <!--<DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="*" Binding="{Binding ManufactureStartDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Manufacture Start Date"></DataGridTextColumn>-->
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="*" Binding="{Binding SopCreatedDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Storage Date"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="*" Binding="{Binding DeliveryDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Delivery Date"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="*" Binding="{Binding FtbDeliveryDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Ftb Delivery Date"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="2*" Binding="{Binding DocNumber}" Header="Doc Number"></DataGridTextColumn>
+
+                            <!--<DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="2*" Binding="{Binding CustomerStatus}" Header="Customer Status"></DataGridTextColumn>-->
+                            <!--<DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="2*" Binding="{Binding MaterialComment}" Header="Material Comments"></DataGridTextColumn>-->
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </Grid>
+
+
+            </TabItem>
+
+            <TabItem Header="Material Review" Padding="10,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="7*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Material Risk: " VerticalAlignment="Center" Margin="20,0,0,0"></Label>
+                        <ComboBox x:Name="MaterialRiskComboBox" SelectionChanged="MaterialRiskComboBox_SelectionChanged"  Margin="0,20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="150"></ComboBox>
+                    
+                        
+                    </StackPanel>
+                    <DataGrid Grid.Row="1" x:Name="MaterialReviewDataGrid" AutoGenerateColumns="False" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="1.5*" Binding="{Binding MaterialStatus}" Header="Material Status">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding MaterialStatus}" Value="Material On Time">
+                                                <Setter Property="Background" Value="Green"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding MaterialStatus}" Value="Material Risk">
+                                                <Setter Property="Background" Value="Red"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding MaterialStatus}" Value="Material Too Early">
+                                                <Setter Property="Background" Value="Yellow"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding Contract}" Header="Contract"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding JobNr}" Header="JobNr"></DataGridTextColumn>
+                            <!--<DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding ManufactureStartDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Manufacture Start Date"></DataGridTextColumn>-->
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding DeliveryDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Delivery Date"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding DateCreated, StringFormat=\{0:dd/MM/yyyy\}}" Header="Date Created"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding DateRequired, StringFormat=\{0:dd/MM/yyyy\}}" Header="Date Required"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding DateQuoted, StringFormat=\{0:dd/MM/yyyy\}}" Header="Date Quoted"></DataGridTextColumn>
+
+
+
+
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding Supplier}" Header="Supplier"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding PjlSupplier}" Header="PJL Supplier"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding PorNr}" Header="POR"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding Description}" Header="Description"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding ExtendedDescription}" Header="Extended Description"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width=".7*" Binding="{Binding QuantityOrdered}" Header="Quantity Ordered"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width=".7*" Binding="{Binding QuantityReceived}" Header="Quantity Received"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding ProcurementComment}" Header="Procurement Comment"></DataGridTextColumn>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+                </Grid>
+
+
+            </TabItem>
+            <TabItem Header="Credit Stop Review" Padding="10,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="7*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Customer Status: " VerticalAlignment="Center" Margin="20,0,0,0"></Label>
+                        <ComboBox x:Name="customerStatusComboBox" SelectionChanged="CustomerStatusComboBox_SelectionChanged" Margin="0,20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="150"></ComboBox>
+                        <!--<Button Visibility="Hidden" Click="CreaitStopReviewClearFiltersButton_Click" Content="Clear Filters" Margin="50,30"></Button>-->
+
+                        <Label Margin="20,0,0,0" VerticalAlignment="Center" Content="Filtered Total: "></Label>
+                        <TextBox Padding="20,0" Width="200" IsEnabled="False" x:Name="CreditStopreviewFilteredTotalTextBox" Margin="0,20"></TextBox>
+                        <Label Margin="20,0,0,0" VerticalAlignment="Center" Content="Highlighted Total: "></Label>
+                        <TextBox Padding="20,0" Width="200" IsEnabled="False" x:Name="CreditStopreviewHighlightedTotalTextBox" Margin="0,20"></TextBox>
+                    </StackPanel>
+                    <DataGrid Grid.Row="1" x:Name="CreditStopReviewDataGrid" AutoGenerateColumns="False" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden" SelectionChanged="CreditStopReviewDataGrid_SelectionChanged" MouseDoubleClick="CreditStopReviewDataGrid_MouseDoubleClick">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Bulk Update Comments" Click="BulkUpdateMaterialReveiwComments_MenuItem_Click" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+
+                                <Style.Triggers>
+
+                                    <DataTrigger Binding="{Binding PotentialOverLimit}" Value="true">
+                                        <Setter Property="Background" Value="LightGreen"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding CustomerStatus}" Value="STOP">
+                                        <Setter Property="Background" Value="Red"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding CustomerStatus}" Value="C.LIMIT">
+                                        <Setter Property="Background" Value="Orange"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+
+                                <!--<Setter Property="Height" Value="50"></Setter>-->
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding Customer}" Header="Customer"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding Contract}" Header="Contract"></DataGridTextColumn>
+                            <!--<DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding DeliveryMonth, StringFormat=\{0:MMM-yy\}}" Header="Delivery Month"></DataGridTextColumn>-->
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Binding="{Binding EarliestDeliveryDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Earliest Delivery Date"></DataGridTextColumn>
+
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding CurrentDebtBalance, StringFormat=C}" Header="Current Debt Balance"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding CumulativeGrossSales, StringFormat=C}" Header="Cumulative Gross Sales"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding PotentialDebtBalance, StringFormat=C}" Header="Potential Debt Balance"></DataGridTextColumn>
+
+                            <!--<DataGridTextColumn Width="2*" Binding="{Binding PotentialDebtBalance, StringFormat=C}" Header="Potential Debt Balance">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding PotentialOverLimit}" Value="true">
+                                                <Setter Property="Background" Value="Red"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>-->
+                            
+                            
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding CreditLimit, StringFormat=C}" Header="Credit Limit"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding Comment}" Header="Comment"></DataGridTextColumn>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <Label Content="Key:" VerticalContentAlignment="Center" Padding="20,0,0,0"></Label>
+                        <TextBox Background="Red" Text="STOP" Margin="10,20" Padding="20,0" VerticalContentAlignment="Center"></TextBox>
+                        <TextBox Background="Orange" Text="C.LIMIT" Margin="10,20" Padding="20,0" VerticalContentAlignment="Center"></TextBox>
+                        <TextBox Background="LightGreen" Text="Potential C.LIMIT" Margin="10,20" Padding="20,0" VerticalContentAlignment="Center"></TextBox>
+                    </StackPanel>
+
+                </Grid>
+
+
+            </TabItem>
+
+            <TabItem Header="Tracker At Risk" Padding="10,0">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="7*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="20,0,0,0" VerticalAlignment="Center" Content="Filtered Total: "></Label>
+                        <TextBox Padding="20,0" Width="200" IsEnabled="False" x:Name="TrackerAtRiskFilteredTotalTextBox" Margin="0,20"></TextBox>
+                        <Label Margin="20,0,0,0" VerticalAlignment="Center" Content="Highlighted Total: "></Label>
+                        <TextBox Padding="20,0" Width="200" IsEnabled="False" x:Name="TrackerAtRiskHighlightedTotalTextBox" Margin="0,20"></TextBox>
+
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                        <Button Content="Export Stock and Wip" Padding="20,0" Margin="20" Click="ExportStockAndWip_Button_Click"></Button>
+
+                    </StackPanel>
+                    <DataGrid x:Name="TrackerAtRiskDataGrid" SelectionChanged="MainTrackerDataGrid_SelectionChanged" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden" Grid.ColumnSpan="2" Sorting="MainTrackerDataGrid_Sorting">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Bulk Update Manufacture Info" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdateManufactureInfo_Click" />
+                                <MenuItem Header="Bulk Update Printed" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdatePrinted_MenuItem_Click" />
+                                <MenuItem Header="Bulk Update Material Comment" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkUpdateMaterialComment_MenuItem_Click" />
+                                <MenuItem Header="Bulk Add to Accruals (2099)" Visibility="{Binding Source={x:Static local:Globals.IsAdGrpTrackerUsers}, Converter={StaticResource PowerUserVisibilityConverter}}" Click="BulkAddToAccruals_MenuItem_Click" />
+                                <MenuItem Header="Copy">
+                                    <MenuItem Header="Contract" Click="CopyContract_MenuItem_Click" />
+                                    <MenuItem Header="Job No" Click="CopyJobNo_MenuItem_Click" />
+                                    <MenuItem Header="Customer" Click="CopyCustomer_MenuItem_Click" />
+                                    <MenuItem Header="Batch Ref" Click="CopyBatchRef_MenuItem_Click" />
+                                    <MenuItem Header="Production Comments Door" Click="CopyProductionCommentsDoor_MenuItem_Click" />
+                                    <MenuItem Header="Production Comments Frame" Click="CopyProductionCommentsDoor_MenuItem_Click" />
+                                    <MenuItem Header="Shopfloor Comments" Click="CopyShopfloorComments_MenuItem_Click" />
+                                </MenuItem>
+
+
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#FFEAAB6B"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
+                                <Setter Property="Height" Value="40"></Setter>
+                                <!--<Setter Property="TextWrapping" Value="Wrap"></Setter>-->
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+
+
+                                <EventSetter Event="MouseDoubleClick" Handler="TrackerItemDoubleClick" />
+                                <!--<Setter Property="Height" Value="50"></Setter>-->
+                            </Style>
+                        </DataGrid.RowStyle>
+
+                        <DataGrid.Columns>
+                            <!--<DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding ManfSite}" Header="ManfSite"></DataGridTextColumn>-->
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="1.5*" Binding="{Binding Contract}" Header="Contract"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.5*" Binding="{Binding JobNo}" Header="Job No"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="2*" Binding="{Binding Customer}" Header="Customer"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.8*" Binding="{Binding BatchRef}" Header="Batch Ref"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding ProductType}" Header="Product Type"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding DoorQty}" Header="Door Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding FrameQty}" Header="Frame Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding PanelQty}" Header="Panel Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding ScreenQty}" Header="Screen Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width=".7*" Binding="{Binding MiscQty}" Header="Other Qty"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding Sales, StringFormat=C}" Header="Sales"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="1.2*" Binding="{Binding DeliveryDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Delivery Date"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterText}" Width="*" Binding="{Binding FtbDeliveryDate, StringFormat=\{0:dd/MM/yyyy\}}" Header="Ftb Delivery Date"></DataGridTextColumn>
+                            <DataGridTextColumn Width="2*" Binding="{Binding ProductionCommentDoor}" Header="Production Comment Door">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Background" Value="{Binding ProductionCommentDoorColourHex}"></Setter>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="2*" Binding="{Binding WipCommentary}" Header="WIP Door Commentary"></DataGridTextColumn>
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource CenterCheckBox}" Width="*" Binding="{Binding IsHighEndFinish,  Mode=OneWay}" Header="High End Finish"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource CenterCheckBox}" Width="*" Binding="{Binding ManufactureCompleted,  Mode=OneWay}" Header="Manufacture Completed"></DataGridCheckBoxColumn>
+                            <DataGridTextColumn Width="2*" Binding="{Binding ProductionCommentFrame}" Header="Production Comment Frame">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Background" Value="{Binding ProductionCommentFrameColourHex}"></Setter>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="2*" Binding="{Binding WipFrameCommentary}" Header="WIP Frame Commentary"></DataGridTextColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="2*" Binding="{Binding RiskComment}" Header="Risk Comment"></DataGridTextColumn>
+
+
+
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource CenterCheckBox}" Visibility="Hidden"  Width="*" Binding="{Binding FilePrintedDate,  Converter={StaticResource HasDateOrFalseBoolConverter}, Mode=OneWay}" Header="Printed Door"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource CenterCheckBox}" Visibility="Hidden"  Width="*" Binding="{Binding PjlFileHasBeenPrinted,  Mode=OneWay}" Header="Printed Frame"></DataGridCheckBoxColumn>
+
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource CenterCheckBox}" Visibility="Hidden"  Width="*" Binding="{Binding HasBeenProcured,  Mode=OneWay}" Header="Procurement Complete"></DataGridCheckBoxColumn>
+                            <DataGridTextColumn ElementStyle="{StaticResource WrapText}" Width="*" Visibility="Hidden"  Binding="{Binding ManfRepAbv}" Header="Manufacture Rep"></DataGridTextColumn>
+
+
+
+
+
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+        <MediaElement Grid.RowSpan="2" x:Name="loadingGif" Visibility="Hidden" MediaEnded="LoadingGif_MediaEnded" UnloadedBehavior="Manual" Source="{Binding Source={x:Static local:Globals.LoadingAnimPath}}" LoadedBehavior="Play" Stretch="Uniform"/>
+    </Grid>
+</Window>

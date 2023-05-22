@@ -1,0 +1,93 @@
+﻿<Window x:Class="IdslTracker.MainMenuWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IdslTracker"
+        mc:Ignorable="d"
+        Title="IDSL Management Suite" Height="450" Width="800" Loaded="Window_Loaded">
+    <Window.Background>
+        <ImageBrush ImageSource="Images/bg.png"></ImageBrush>
+    </Window.Background>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height=".1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Button Margin="20" BorderThickness="0" Click="Tracker_Button_Click" Background="DarkSeaGreen">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Image Source="Images/TrackingIcon.png" Stretch="Uniform" />
+                <TextBlock Grid.Row="1" Foreground="White" HorizontalAlignment="Center">Tracker</TextBlock>
+            </Grid>
+        </Button>
+        <Button Margin="20" BorderThickness="0" Background="Black" Grid.Column="1" Click="Reports_Button_Click">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Image Source="Images/ManufactureBtn.png" Stretch="Fill" />
+                <StackPanel VerticalAlignment="Bottom">
+
+                    <TextBlock Padding="10,5" Margin="0,10" Background="White" Grid.Row="1" Foreground="Black" HorizontalAlignment="Center" Opacity="0.85">Reports</TextBlock>
+                </StackPanel>
+            </Grid>
+        </Button>
+        <Button Visibility="Hidden" Margin="20" BorderThickness="0" Background="Black" Grid.Column="2" Click="ManageProforma_Button_Click">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Image Source="Images/Shane.jpg" Stretch="Fill" />
+                <StackPanel VerticalAlignment="Bottom">
+
+                    <TextBlock Padding="10,5" Margin="0,10" Background="White" Grid.Row="1" Foreground="Black" HorizontalAlignment="Center" Opacity="0.85">Manage Proformas</TextBlock>
+                </StackPanel>
+            </Grid>
+        </Button>
+
+
+        <Border BorderBrush="Gray" BorderThickness="2" Grid.Row="1" Grid.Column="3" Margin="20">
+            <Border.Background>
+                <SolidColorBrush Color="Azure" Opacity="0.75" />
+            </Border.Background>
+            <StackPanel Grid.Row="1" Grid.Column="3">
+
+                <TextBlock Text="Useful Links" HorizontalAlignment="Center" Margin="10"></TextBlock>
+                <TextBlock Margin="10,0">
+                <Hyperlink NavigateUri="https://www.msc.com/gbr" RequestNavigate="Hyperlink_RequestNavigate">MSC</Hyperlink>
+                </TextBlock>
+                <TextBlock Margin="10,0">
+                <Hyperlink NavigateUri="http://www.shipindia.com/frontcontroller/track_trace1" RequestNavigate="Hyperlink_RequestNavigate">Ship India</Hyperlink>
+                </TextBlock>
+                <TextBlock Margin="10,0">
+                <Hyperlink NavigateUri="https://www.maersk.com/tracking" RequestNavigate="Hyperlink_RequestNavigate">Maersk</Hyperlink>
+                </TextBlock>
+                <TextBlock Margin="10,0">
+                <Hyperlink NavigateUri="https://www.hamburgsud-line.com/liner/en/liner_services/ecommerce/track_trace/index.html" RequestNavigate="Hyperlink_RequestNavigate">Hamburgsud-line</Hyperlink>
+                </TextBlock>
+                <Viewbox>
+                    <TextBlock FontWeight="Bold" Margin="10,10">
+                    <Hyperlink NavigateUri="\\idsl-fs\Company\I.T - ALL\Bespoke software\IdslTrackerV2\IDSL Management Suite user manual.docx" RequestNavigate="Hyperlink_RequestNavigate">TRACKER USER GUIDE!</Hyperlink>
+                    </TextBlock>
+                </Viewbox>
+                
+            </StackPanel>
+        </Border>
+        
+    </Grid>
+</Window>
